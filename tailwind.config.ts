@@ -11,9 +11,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-      },
-      fontFamily: {
-        pretendard: ["var(--font-pretendard)"],
+        primary: "#8000ff",
       },
     },
   },
