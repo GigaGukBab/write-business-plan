@@ -1,0 +1,23 @@
+.overlay {
+  @apply fixed inset-0 flex items-center justify-center bg-black/50 z-50;
+
+  .content {
+    @apply bg-white rounded-lg p-8 flex flex-col items-center max-w-md w-full mx-4;
+
+    .icon {
+      @apply text-4xl mb-4;
+    }
+
+    .title {
+      @apply text-xl font-bold mb-2;
+    }
+
+    .description {
+      @apply text-gray-600 text-center;
+    }
+
+    .button {
+      @apply mt-6 px-6 py-2 bg-primary text-white rounded-lg;
+    }
+  }
+}

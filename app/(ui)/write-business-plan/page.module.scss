@@ -1,3 +1,61 @@
 .root {
-  @apply min-h-screen bg-background;
+  .mainForm {
+    @apply px-60 py-20;
+
+    .title {
+      @apply text-xl font-semibold mb-4;
+    }
+
+    .progressBarContainer {
+      @apply w-full h-2 bg-gray-200 rounded-full mb-4;
+
+      .progressBar {
+        @apply h-full bg-primary rounded-full transition-all duration-300 ease-in-out;
+      }
+    }
+
+    .stepIndicator {
+      @apply text-sm text-gray-600 mb-8;
+    }
+
+    .reviewContainer {
+      @apply space-y-6;
+
+      .reviewTitle {
+        @apply text-2xl font-bold mb-6;
+      }
+
+      .reviewItem {
+        @apply border-b pb-4;
+
+        .reviewHeader {
+          @apply flex justify-between items-center mb-2;
+
+          h3 {
+            @apply font-semibold;
+          }
+
+          .editButton {
+            @apply text-sm text-gray-500 hover:underline;
+          }
+        }
+
+        .reviewInput {
+          @apply w-full p-2 bg-gray-50 border rounded-md text-gray-600;
+
+          &:disabled {
+            @apply bg-gray-50 border-gray-200;
+          }
+
+          &:not(:disabled) {
+            @apply bg-white border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500;
+          }
+        }
+      }
+    }
+
+    .buttonContainer {
+      @apply flex justify-end mt-8 gap-4;
+    }
+  }
 }

@@ -1,0 +1,15 @@
+.root {
+  @apply mb-8;
+
+  .title {
+    @apply text-2xl mb-2 font-bold;
+  }
+
+  .subtitle {
+    @apply mb-6;
+  }
+
+  .businessInfoInput {
+    @apply w-1/2 p-4 border rounded focus:ring-2 focus:outline-none focus:ring-primary;
+  }
+}
