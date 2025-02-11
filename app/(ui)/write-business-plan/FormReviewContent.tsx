@@ -1,7 +1,11 @@
 import styles from "./FormReviewContent.module.scss";
 import { useAtom } from "jotai";
-import { _editingFieldStatus } from "@/app/states/save";
-import React from "react";
+import {
+  _editingFieldStatus,
+  BusinessPlanInfoField,
+  BusinessPlanInfoFormData,
+} from "@/app/states/save";
+import React, { useCallback } from "react";
 
 export default function FormReviewContent({
   businessPlanInfoContent,
@@ -11,44 +15,46 @@ export default function FormReviewContent({
   businessPlanInfoContent: {
     title: string;
     subtitle: string;
-    field:
-      | "title"
-      | "motivation"
-      | "development_state"
-      | "team_info"
-      | "goal_market";
+    businessPlanInfoField: BusinessPlanInfoField;
   }[];
-  formData: Record<string, string>;
-  setFormData: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  formData: BusinessPlanInfoFormData;
+  setFormData: React.Dispatch<React.SetStateAction<BusinessPlanInfoFormData>>;
 }) {
   const [editingFieldStatus, setEditingFieldStatus] =
     useAtom(_editingFieldStatus);
+
+  const handleInputChange = useCallback((field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  }, []);
+
+  const handleEditField = useCallback((field: BusinessPlanInfoField) => {
+    setEditingFieldStatus((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  }, []);
+
   return businessPlanInfoContent.map((item) => (
-    <div key={item.field} className={styles.reviewItem}>
+    <div key={item.businessPlanInfoField} className={styles.reviewItem}>
       <div className={styles.reviewHeader}>
         <h3>{item.title}</h3>
         <button
           className={styles.editButton}
-          onClick={() =>
-            setEditingFieldStatus((prev) => ({
-              ...prev,
-              [item.field]: !prev[item.field],
-            }))
-          }
+          onClick={() => handleEditField(item.businessPlanInfoField)}
         >
-          {editingFieldStatus[item.field] ? "완료" : "수정"}
+          {editingFieldStatus[item.businessPlanInfoField] ? "완료" : "수정"}
         </button>
       </div>
       <input
         type="text"
-        value={formData[item.field]}
+        value={formData[item.businessPlanInfoField]}
         onChange={(e) => {
-          setFormData((prev) => ({
-            ...prev,
-            [item.field]: e.target.value,
-          }));
+          handleInputChange(item.businessPlanInfoField, e.target.value);
         }}
-        disabled={!editingFieldStatus[item.field]}
+        disabled={!editingFieldStatus[item.businessPlanInfoField]}
         className={styles.reviewInput}
       />
     </div>

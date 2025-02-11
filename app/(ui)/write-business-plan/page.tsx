@@ -5,50 +5,48 @@ import styles from "./page.module.scss";
 import StepContent from "./StepContent";
 import ActionButton from "./ActionButton";
 import FormReviewContent from "./FormReviewContent";
-import { _editingFieldStatus } from "@/app/states/save";
+import {
+  _editingFieldStatus,
+  BusinessPlanInfoField,
+  BusinessPlanInfoFormData,
+  StepNumber,
+} from "@/app/states/save";
 import { useAtomValue } from "jotai";
 import StatusOverlay from "./StatusOverlay";
 import { useRouter } from "next/navigation";
 
-type StepNumber = 1 | 2 | 3 | 4 | 5 | 6;
-
 const businessPlanInfoContent: {
   title: string;
   subtitle: string;
-  field:
-    | "title"
-    | "motivation"
-    | "development_state"
-    | "team_info"
-    | "goal_market";
+  businessPlanInfoField: BusinessPlanInfoField;
 }[] = [
   {
     title: "아이템의 한 줄 제목을 입력해주세요",
     subtitle: '(OO를 위해 OOO를 접목한 OOO 제품/서비스 "제품/서비스명")',
-    field: "title" as const,
+    businessPlanInfoField: "title" as const,
   },
   {
     title: "아이템의 개발 동기를 입력해주세요",
     subtitle:
       "(시장에서 OO 문제를 발견하고, 이 문제를 해결하기 위해 OOO 기술을 접목한 서비스를 만듦)",
-    field: "motivation" as const,
+    businessPlanInfoField: "motivation" as const,
   },
   {
     title: "아이템의 현재 개발 상황에 대해 입력해주세요",
     subtitle: "(서비스 기획 완료, 서비스 론칭 완료, 제품 개발 완료 등)",
-    field: "development_state" as const,
+    businessPlanInfoField: "development_state" as const,
   },
   {
     title: "대표님과 팀원에 대해 소개를 입력해주세요",
     subtitle:
       "(대표자는 OO 분야의 전문가로 n년의 경험을 통해 이전 문제들을 파악함)",
-    field: "team_info" as const,
+    businessPlanInfoField: "team_info" as const,
   },
   {
     title: "아이템의 목표 시장을 입력해주세요",
     subtitle:
       "(tam: 글로벌 유아용 화장품 시장, sam: 아시아 유아용 화장품 시장, som: 한국 유아용 화장품 시장)",
-    field: "goal_market" as const,
+    businessPlanInfoField: "goal_market" as const,
   },
 ];
 
@@ -58,16 +56,7 @@ export default function WriteBusinessPlanFormPage() {
   const [status, setStatus] = useState<
     "idle" | "processing" | "success" | "error"
   >("idle");
-  const [formData, setFormData] = useState<
-    Record<
-      | "title"
-      | "motivation"
-      | "development_state"
-      | "team_info"
-      | "goal_market",
-      string
-    >
-  >({
+  const [formData, setFormData] = useState<BusinessPlanInfoFormData>({
     title: "",
     motivation: "",
     development_state: "",
@@ -81,7 +70,7 @@ export default function WriteBusinessPlanFormPage() {
   const progressPercentage = (Math.min(currentStep, 5) / 5) * 100;
 
   const handleInputChange = (step: StepNumber, value: string) => {
-    const field = businessPlanInfoContent[step - 1].field;
+    const field = businessPlanInfoContent[step - 1].businessPlanInfoField;
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -142,7 +131,9 @@ export default function WriteBusinessPlanFormPage() {
             currentStep={currentStep}
             content={businessPlanInfoContent}
             businessInfoInputValue={
-              formData[businessPlanInfoContent[currentStep - 1].field]
+              formData[
+                businessPlanInfoContent[currentStep - 1].businessPlanInfoField
+              ]
             }
             onChange={(value) => handleInputChange(currentStep, value)}
           />
@@ -169,7 +160,9 @@ export default function WriteBusinessPlanFormPage() {
                 setCurrentStep((prev) => Math.min(6, prev + 1) as StepNumber)
               }
               disabled={
-                formData[businessPlanInfoContent[currentStep - 1].field] === ""
+                formData[
+                  businessPlanInfoContent[currentStep - 1].businessPlanInfoField
+                ] === ""
               }
             />
           )}
