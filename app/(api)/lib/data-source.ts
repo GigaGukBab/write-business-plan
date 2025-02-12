@@ -7,7 +7,7 @@ export const MySqlDataSource = new DataSource({
   port: parseInt(process.env.DATASOURCE_PORT || "3306"),
   username: process.env.DATASOURCE_USERNAME,
   password: process.env.DATASOURCE_PASSWORD,
-  database: process.env.DATASOURCE_DATABASE,
+  database: process.env.DATASOURCE_DATABASE_NAME,
   logging: true,
   synchronize: process.env.NODE_ENV === "development",
   entities: [BusinessPlanInfo],

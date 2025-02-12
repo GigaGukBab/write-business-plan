@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "db:setup": "dotenv -e .env.local -- bash -c './script/db.sh \"${DB_CONTAINER_NAME}\" \"${DATASOURCE_PASSWORD}\" \"${DATASOURCE_DATABASE}\" \"${DATASOURCE_PORT}\" \"${MYSQL_VERSION}\"'",
+    "db:setup": "dotenv -e .env.local -- bash -c './script/db.sh \"${DB_CONTAINER_NAME}\" \"${DATASOURCE_PASSWORD}\" \"${DATASOURCE_DATABASE_NAME}\" \"${DATASOURCE_PORT}\" \"${MYSQL_VERSION}\"'",
     "dev": "npm run db:setup && next dev --turbopack",
     "build": "next build",
     "start": "next start",
