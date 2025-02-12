@@ -5,7 +5,6 @@ import {
   BusinessPlanInfoField,
   BusinessPlanInfoFormData,
 } from "@/states/save";
-import React, { useCallback } from "react";
 
 export default function FormReviewContent({
   businessPlanInfoContent,
@@ -23,19 +22,19 @@ export default function FormReviewContent({
   const [editingFieldStatus, setEditingFieldStatus] =
     useAtom(_editingFieldStatus);
 
-  const handleInputChange = useCallback((field: string, value: string) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
-  }, []);
+  };
 
-  const handleEditField = useCallback((field: BusinessPlanInfoField) => {
+  const handleEditField = (field: BusinessPlanInfoField) => {
     setEditingFieldStatus((prev) => ({
       ...prev,
       [field]: !prev[field],
     }));
-  }, []);
+  };
 
   return businessPlanInfoContent.map((item) => (
     <div key={item.businessPlanInfoField} className={styles.reviewItem}>

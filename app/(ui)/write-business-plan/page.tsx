@@ -77,6 +77,14 @@ export default function WriteBusinessPlanFormPage() {
     }));
   };
 
+  const handleStepBack = () => {
+    setCurrentStep((prev) => Math.max(1, prev - 1) as StepNumber);
+  };
+
+  const handleStepForward = () => {
+    setCurrentStep((prev) => Math.min(6, prev + 1) as StepNumber);
+  };
+
   const handleSubmit = async () => {
     setStatus("processing");
     try {
@@ -142,9 +150,7 @@ export default function WriteBusinessPlanFormPage() {
         <div className={styles.buttonContainer}>
           <ActionButton
             type="back"
-            onClick={() =>
-              setCurrentStep((prev) => Math.max(1, prev - 1) as StepNumber)
-            }
+            onClick={handleStepBack}
             disabled={currentStep === 1 || status === "processing"}
           />
           {isReviewStep ? (
@@ -156,9 +162,7 @@ export default function WriteBusinessPlanFormPage() {
           ) : (
             <ActionButton
               type="next"
-              onClick={() =>
-                setCurrentStep((prev) => Math.min(6, prev + 1) as StepNumber)
-              }
+              onClick={handleStepForward}
               disabled={
                 formData[
                   businessPlanInfoContent[currentStep - 1].businessPlanInfoField
