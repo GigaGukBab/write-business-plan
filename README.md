@@ -29,16 +29,11 @@ cp .env.example .env.local
 
 ```env
 # 데이터베이스 설정
-DATASOURCE_TYPE=          # 데이터베이스 유형 (mysql)
-DATASOURCE_HOST=          # 데이터베이스 호스트 주소
-DATASOURCE_PORT=          # 데이터베이스 포트 (원하는 포트 번호)
-DATASOURCE_USERNAME=      # 데이터베이스 사용자 이름
-DATASOURCE_PASSWORD=      # 데이터베이스 비밀번호
-DATASOURCE_DATABASE_NAME= # 데이터베이스 이름
-
-# Docker MySQL 설정
-DB_CONTAINER_NAME=   # 실행할 mySql Docker 컨테이너 이름
-MYSQL_VERSION=       # MySQL 버전 (8.0)
+DATABASE_PORT=          # 데이터베이스 포트 (원하는 포트 번호)
+DATABASE_USERNAME=      # 데이터베이스 사용자 이름
+DATABASE_PASSWORD=      # 데이터베이스 비밀번호
+DATABASE_NAME=          # 데이터베이스 이름
+ROOT_PASSWORD=          # 데이터베이스 루트 비밀번호
 ```
 
 ### 개발 서버 실행

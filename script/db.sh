@@ -2,58 +2,63 @@
 
 set -e
 
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 5 ]; then
     echo "Error: Missing required parameters"
-    echo "Usage: $0 DB_CONTAINER_NAME DB_ROOT_PASSWORD DB_NAME DB_PORT [MYSQL_VERSION]"
+    echo "Usage: $0 DATABASE_PORT DATABASE_USERNAME DATABASE_PASSWORD DATABASE_NAME ROOT_PASSWORD"
     exit 1
 fi
 
-DB_CONTAINER_NAME=$1
-DB_ROOT_PASSWORD=$2
-DB_NAME=$3
-DB_PORT=$4
-MYSQL_VERSION=${5:-"latest"}
+DATABASE_PORT=$1
+DATABASE_USERNAME=$2
+DATABASE_PASSWORD=$3
+DATABASE_NAME=$4
+ROOT_PASSWORD=$5
 
-if [ -z "$DB_CONTAINER_NAME" ] || [ -z "$DB_ROOT_PASSWORD" ] || [ -z "$DB_NAME" ] || [ -z "$DB_PORT" ]; then
+CONTAINER_NAME="mysql-${DATABASE_USERNAME}"
+
+if [ -z "$DATABASE_PORT" ] || [ -z "$DATABASE_USERNAME" ] || [ -z "$DATABASE_PASSWORD" ] || [ -z "$DATABASE_NAME" ] || [ -z "$ROOT_PASSWORD" ]; then
     echo "Error: All parameters must have values"
     exit 1
 fi
 
-if [ "$(docker ps -q -f name=$DB_CONTAINER_NAME)" ]; then
-    echo "Container $DB_CONTAINER_NAME is already running"
-elif [ "$(docker ps -aq -f status=exited -f name=$DB_CONTAINER_NAME)" ]; then
-    echo "Container $DB_CONTAINER_NAME exists but is not running. Starting it..."
-    docker start $DB_CONTAINER_NAME
+if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+    echo "Container $CONTAINER_NAME is already running"
+elif [ "$(docker ps -aq -f status=exited -f name=$CONTAINER_NAME)" ]; then
+    echo "Container $CONTAINER_NAME exists but is not running. Starting it..."
+    docker start $CONTAINER_NAME
 else
-    if ! docker image inspect mysql:$MYSQL_VERSION >/dev/null 2>&1; then
+    if ! docker image inspect mysql:8.0 >/dev/null 2>&1; then
         echo "Pulling MySQL image..."
-        docker pull mysql:$MYSQL_VERSION
+        docker pull mysql:8.0
     else
         echo "MySQL image already exists. Skipping pull..."
     fi
 
     echo "Starting new MySQL container..."
     docker run -d \
-        --name $DB_CONTAINER_NAME \
-        -e MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD \
-        -e MYSQL_DATABASE=$DB_NAME \
-        -p $DB_PORT:3306 \
-        mysql:$MYSQL_VERSION
+        --name $CONTAINER_NAME \
+        -e MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD \
+        -p $DATABASE_PORT:3306 \
+        mysql:8.0
 
     echo "Waiting for MySQL to start..."
-    sleep 10
+    sleep 15
 fi
 
-echo "Checking database..."
-if docker exec $DB_CONTAINER_NAME mysql -uroot -p$DB_ROOT_PASSWORD -e "USE $DB_NAME" 2>/dev/null; then
-    echo "Database $DB_NAME already exists"
+echo "Setting up database and user permissions..."
+docker exec $CONTAINER_NAME mysql -uroot -p$ROOT_PASSWORD -e "
+    CREATE DATABASE IF NOT EXISTS $DATABASE_NAME;
+    CREATE USER IF NOT EXISTS '$DATABASE_USERNAME'@'%' IDENTIFIED BY '$DATABASE_PASSWORD';
+    GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_USERNAME'@'%';
+    FLUSH PRIVILEGES;
+"
+
+echo "Verifying database access..."
+if docker exec $CONTAINER_NAME mysql -u$DATABASE_USERNAME -p$DATABASE_PASSWORD -e "USE $DATABASE_NAME" 2>/dev/null; then
+    echo "Database setup verified successfully"
 else
-    echo "Creating database $DB_NAME..."
-    docker exec $DB_CONTAINER_NAME mysql \
-        -uroot \
-        -p$DB_ROOT_PASSWORD \
-        -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-    echo "Database created successfully"
+    echo "Error: Failed to verify database access"
+    exit 1
 fi
 
-echo "Database(MySql) setup completed successfully!"
+echo "Database(MySQL) setup completed successfully!"
