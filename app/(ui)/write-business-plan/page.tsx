@@ -144,6 +144,7 @@ export default function WriteBusinessPlanFormPage() {
               ]
             }
             onChange={(value) => handleInputChange(currentStep, value)}
+            onEnterPress={handleStepForward}
           />
         )}
 
