@@ -9,6 +9,7 @@ export type BusinessPlanInfoField =
   | "goal_market";
 export type BusinessPlanInfoFormData = Record<BusinessPlanInfoField, string>;
 export type EditingFieldsType = Record<BusinessPlanInfoField, boolean>;
+
 export const _editingFieldStatus = atom<EditingFieldsType>({
   title: false,
   motivation: false,

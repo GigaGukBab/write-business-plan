@@ -1,6 +1,5 @@
-import Header from "../components/Header";
 import styles from "./layout.module.scss";
-
+import Header from "@/components/Header";
 export default function HomeLayout({
   children,
 }: {

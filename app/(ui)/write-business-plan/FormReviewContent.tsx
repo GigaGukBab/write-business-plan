@@ -4,7 +4,7 @@ import {
   _editingFieldStatus,
   BusinessPlanInfoField,
   BusinessPlanInfoFormData,
-} from "@/app/states/save";
+} from "@/states/save";
 import React, { useCallback } from "react";
 
 export default function FormReviewContent({

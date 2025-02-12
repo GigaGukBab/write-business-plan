@@ -10,7 +10,7 @@ import {
   BusinessPlanInfoField,
   BusinessPlanInfoFormData,
   StepNumber,
-} from "@/app/states/save";
+} from "@/states/save";
 import { useAtomValue } from "jotai";
 import StatusOverlay from "./StatusOverlay";
 import { useRouter } from "next/navigation";
