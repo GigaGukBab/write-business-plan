@@ -32,7 +32,7 @@ cp .env.example .env.local
 DATABASE_PORT=          # 데이터베이스 포트 (원하는 포트 번호)
 DATABASE_USERNAME=      # 데이터베이스 사용자 이름
 DATABASE_PASSWORD=      # 데이터베이스 비밀번호
-DATABASE_NAME=          # 데이터베이스 이름
+DATABASE_NAME=          # 데이터베이스 이름 (하이픈(-) 사용 X)
 ROOT_PASSWORD=          # 데이터베이스 루트 비밀번호
 ```
 
