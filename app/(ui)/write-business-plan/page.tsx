@@ -63,8 +63,8 @@ export default function WriteBusinessPlanFormPage() {
     team_info: "",
     goal_market: "",
   });
-  const editingFieldStatus = useAtomValue(_editingFieldStatus);
   const [isAnyFieldEditing, setIsAnyFieldEditing] = useState(false);
+  const editingFieldStatus = useAtomValue(_editingFieldStatus);
 
   const isReviewStep = currentStep === 6;
   const progressPercentage = (Math.min(currentStep, 5) / 5) * 100;

@@ -42,7 +42,7 @@ else
         mysql:8.0
 
     echo "Waiting for MySQL to start..."
-    sleep 5
+    sleep 10
 fi
 
 echo "Setting up database and user permissions..."
